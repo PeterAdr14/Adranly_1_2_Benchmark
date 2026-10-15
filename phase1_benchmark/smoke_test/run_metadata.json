@@ -1,0 +1,363 @@
+{
+  "run_name": "smoke_test",
+  "config_hash": "4f52697f9f09a941",
+  "config": {
+    "run": {
+      "name": "smoke_test",
+      "output_dir": "/home/adranly.p/ocsr_results",
+      "data_dir": "/scratch/adranly.p/ocsr_bench/data",
+      "seed": 42,
+      "max_samples": 20,
+      "batch_size": 16,
+      "device": "auto",
+      "resume": true
+    },
+    "metrics": {
+      "fingerprint_radius": 2,
+      "fingerprint_bits": 2048,
+      "bootstrap_samples": 1000,
+      "confidence_bins": 10,
+      "openbabel_cross_check": false
+    },
+    "x-real-archive": {
+      "hf_repo": "CYF200127/MolNexTR",
+      "hf_filename": "real.zip",
+      "repo_type": "dataset",
+      "extract_name": "molnextr_real"
+    },
+    "datasets": [
+      {
+        "name": "clef",
+        "kind": "hf_archive",
+        "params": {
+          "hf_repo": "CYF200127/MolNexTR",
+          "hf_filename": "real.zip",
+          "repo_type": "dataset",
+          "extract_name": "molnextr_real",
+          "labels_match": "clef",
+          "max_samples": 500
+        }
+      },
+      {
+        "name": "uob",
+        "kind": "hf_archive",
+        "params": {
+          "hf_repo": "CYF200127/MolNexTR",
+          "hf_filename": "real.zip",
+          "repo_type": "dataset",
+          "extract_name": "molnextr_real",
+          "labels_match": "uob",
+          "max_samples": 500
+        }
+      },
+      {
+        "name": "uspto",
+        "kind": "hf_archive",
+        "params": {
+          "hf_repo": "CYF200127/MolNexTR",
+          "hf_filename": "real.zip",
+          "repo_type": "dataset",
+          "extract_name": "molnextr_real",
+          "labels_match": "uspto",
+          "max_samples": 500
+        }
+      },
+      {
+        "name": "jpo",
+        "kind": "hf_archive",
+        "params": {
+          "hf_repo": "CYF200127/MolNexTR",
+          "hf_filename": "real.zip",
+          "repo_type": "dataset",
+          "extract_name": "molnextr_real",
+          "labels_match": "jpo",
+          "max_samples": 500
+        }
+      },
+      {
+        "name": "biovista_ocsr",
+        "kind": "gdrive_zip",
+        "params": {
+          "gdrive_file_id": "11iCH0j7U9iFgwXahjkWZouNyqATfEPoL",
+          "labels_file": null,
+          "image_column": null,
+          "smiles_column": null,
+          "max_samples": 1000
+        }
+      },
+      {
+        "name": "uspto30k",
+        "kind": "huggingface",
+        "enabled": false,
+        "params": {
+          "hf_repo": "docling-project/USPTO-30K",
+          "hf_config": null,
+          "split": null,
+          "max_samples": 1000
+        }
+      }
+    ],
+    "tools": [
+      {
+        "name": "biominer_molglyph",
+        "kind": "molglyph",
+        "params": {
+          "checkpoint_repo": "jiaxianustc/MolGlyph",
+          "checkpoint_filename": "molglyph_large.pt",
+          "checkpoint_path": null,
+          "biominer_repo_url": "https://github.com/jiaxianyan/BioMiner.git",
+          "biominer_ref": null,
+          "biominer_repo_path": null,
+          "postprocess": true,
+          "allow_unsafe_torch_load": false
+        }
+      },
+      {
+        "name": "molnextr",
+        "kind": "molnextr",
+        "params": {
+          "checkpoint_repo": "CYF200127/MolNexTR",
+          "checkpoint_repo_type": "dataset",
+          "checkpoint_filename": "molnextr_best.pth",
+          "checkpoint_path": null,
+          "repo_url": "https://github.com/CYF2000127/MolNexTR.git",
+          "repo_ref": null,
+          "repo_path": null,
+          "python_executable": "/scratch/adranly.p/ocsr_bench/envs/ocsr-molnextr/bin/python",
+          "python_version": "3.8",
+          "torch_spec": "torch",
+          "extra_requirements": []
+        }
+      },
+      {
+        "name": "osra",
+        "kind": "osra",
+        "enabled": false,
+        "params": {
+          "timeout_s": 120
+        }
+      }
+    ]
+  },
+  "started_at": "2026-10-15T02:40:16+00:00",
+  "finished_at": "2026-10-15T02:46:35+00:00",
+  "environment": {
+    "python": "3.10.22",
+    "platform": "Linux-5.14.0-362.13.1.el9_3.x86_64-x86_64-with-glibc2.34",
+    "packages": {
+      "numpy": "1.26.4",
+      "pandas": "2.2.3",
+      "rdkit": "2026.9.1",
+      "torch": "2.6.0+cu124",
+      "datasets": "5.1.0",
+      "huggingface_hub": "2.2.0",
+      "gdown": "6.4.2",
+      "openbabel-wheel": null,
+      "MolScribe": null
+    },
+    "gpu": "Tesla T4"
+  },
+  "tool_resources": {
+    "biominer_molglyph": {
+      "biominer_commit": "17c6161b40e34e2c377b2871f760baab3fdeea06",
+      "postprocess": true,
+      "peak_gpu_memory_mb": 1892.4
+    },
+    "molnextr": {
+      "molnextr_commit": "6f6502b4ed9733dba8b1ee45d2da474576683194",
+      "worker_python": "3.8.20",
+      "worker_torch": "2.4.1+cu121",
+      "worker_class": "MolNexTR.model.molnextr",
+      "peak_gpu_memory_mb": 496.1,
+      "environment_freeze": [
+        "absl-py==2.3.1",
+        "aiohappyeyeballs==2.4.4",
+        "aiohttp==3.10.11",
+        "aiosignal==1.3.1",
+        "albumentations==1.1.0",
+        "async-timeout==5.0.1",
+        "attrs==25.3.0",
+        "blinker==1.8.2",
+        "certifi==2026.7.22",
+        "cffi==1.17.1",
+        "charset-normalizer==3.5.2",
+        "click==8.1.8",
+        "configargparse==1.8.0",
+        "contourpy==1.1.1",
+        "cryptography==47.0.0",
+        "cycler==0.12.1",
+        "fastprogress==1.0.5",
+        "filelock==3.16.1",
+        "flask==3.0.3",
+        "fonttools==4.57.0",
+        "frozenlist==1.5.0",
+        "fsspec==2025.3.0",
+        "gensim==4.3.3",
+        "google-auth==2.50.0",
+        "google-auth-oauthlib==1.0.0",
+        "grpcio==1.70.0",
+        "idna==3.15",
+        "imageio==2.35.1",
+        "importlib-metadata==8.5.0",
+        "importlib-resources==6.4.5",
+        "itsdangerous==2.2.0",
+        "jinja2==3.1.6",
+        "joblib==1.4.2",
+        "kiwisolver==1.4.7",
+        "lazy-loader==0.4",
+        "lightning-utilities==0.11.9",
+        "markdown==3.7",
+        "markupsafe==2.1.5",
+        "matplotlib==3.7.5",
+        "mpmath==1.3.0",
+        "multidict==6.1.0",
+        "networkx==3.1",
+        "numpy==1.24.4",
+        "nvidia-cublas-cu12==12.1.3.1",
+        "nvidia-cuda-cupti-cu12==12.1.105",
+        "nvidia-cuda-nvrtc-cu12==12.1.105",
+        "nvidia-cuda-runtime-cu12==12.1.105",
+        "nvidia-cudnn-cu12==9.1.0.70",
+        "nvidia-cufft-cu12==11.0.2.54",
+        "nvidia-curand-cu12==10.3.2.106",
+        "nvidia-cusolver-cu12==11.4.5.107",
+        "nvidia-cusparse-cu12==12.1.0.106",
+        "nvidia-nccl-cu12==2.20.5",
+        "nvidia-nvjitlink-cu12==12.9.86",
+        "nvidia-nvtx-cu12==12.1.105",
+        "oauthlib==3.3.1",
+        "opencv-python==5.0.0.93",
+        "opencv-python-headless==5.0.0.93",
+        "opennmt-py==2.2.0",
+        "packaging==26.2",
+        "pandas==2.0.3",
+        "pillow==10.4.0",
+        "pip @ file:///croot/pip_1723484598856/work",
+        "propcache==0.2.0",
+        "protobuf==5.29.6",
+        "pyasn1==0.6.4",
+        "pyasn1-modules==0.4.2",
+        "pycparser==2.23",
+        "pyonmttok==1.37.1",
+        "pyparsing==3.1.4",
+        "pystow==0.5.6",
+        "python-dateutil==2.9.0.post0",
+        "pytorch-lightning==2.4.0",
+        "pytz==2026.5",
+        "pywavelets==1.4.1",
+        "pyyaml==6.0.3",
+        "qudida==0.0.4",
+        "rdkit==2024.3.5",
+        "requests==2.32.4",
+        "requests-oauthlib==2.0.0",
+        "scikit-image==0.21.0",
+        "scikit-learn==1.3.2",
+        "scipy==1.10.1",
+        "sentencepiece==0.2.0",
+        "setuptools==75.1.0",
+        "six==1.17.0",
+        "smart-open==7.3.1",
+        "smilespe==0.0.3",
+        "sympy==1.13.3",
+        "tensorboard==2.14.0",
+        "tensorboard-data-server==0.7.2",
+        "threadpoolctl==3.5.0",
+        "tifffile==2023.7.10",
+        "timm==0.4.12",
+        "torch==2.4.1+cu121",
+        "torchmetrics==1.5.2",
+        "torchtext==0.5.0",
+        "torchvision==0.19.1",
+        "tqdm==4.70.1",
+        "triton==3.0.0",
+        "typing-extensions==4.13.2",
+        "tzdata==2026.5",
+        "urllib3==2.2.3",
+        "waitress==3.0.0",
+        "werkzeug==3.0.6",
+        "wheel==0.44.0",
+        "wrapt==2.0.1",
+        "yarl==1.15.2",
+        "zipp==3.20.2"
+      ]
+    }
+  },
+  "datasets": {
+    "clef": {
+      "labels_file": "real/CLEF.csv",
+      "layout": "reference",
+      "columns": [
+        "file_path",
+        "SMILES"
+      ],
+      "n_label_rows": 991,
+      "n_images_found": 68407,
+      "n_unresolved_rows": 0,
+      "n_empty_labels": 0,
+      "kind": "hf_archive",
+      "n_samples": 20,
+      "max_samples": 20
+    },
+    "uob": {
+      "labels_file": "real/UOB.csv",
+      "layout": "reference",
+      "columns": [
+        "file_path",
+        "SMILES"
+      ],
+      "n_label_rows": 5740,
+      "n_images_found": 68407,
+      "n_unresolved_rows": 0,
+      "n_empty_labels": 0,
+      "kind": "hf_archive",
+      "n_samples": 20,
+      "max_samples": 20
+    },
+    "uspto": {
+      "labels_file": "real/USPTO.csv",
+      "layout": "reference",
+      "columns": [
+        "file_path",
+        "SMILES"
+      ],
+      "n_label_rows": 5718,
+      "n_images_found": 68407,
+      "n_unresolved_rows": 0,
+      "n_empty_labels": 2,
+      "kind": "hf_archive",
+      "n_samples": 20,
+      "max_samples": 20
+    },
+    "jpo": {
+      "labels_file": "real/JPO.csv",
+      "layout": "reference",
+      "columns": [
+        "file_path",
+        "SMILES"
+      ],
+      "n_label_rows": 449,
+      "n_images_found": 68407,
+      "n_unresolved_rows": 0,
+      "n_empty_labels": 0,
+      "kind": "hf_archive",
+      "n_samples": 20,
+      "max_samples": 20
+    },
+    "biovista_ocsr": {
+      "labels_file": "ocsr/labels/gd_SMIELS.csv",
+      "layout": "composite",
+      "columns": [
+        "pdf_name",
+        "index",
+        "smiles"
+      ],
+      "n_label_rows": 8861,
+      "n_images_found": 8861,
+      "n_unresolved_rows": 0,
+      "n_empty_labels": 0,
+      "kind": "gdrive_zip",
+      "n_samples": 20,
+      "max_samples": 20
+    }
+  }
+}
