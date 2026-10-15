@@ -1,5 +1,3 @@
-# CV_XN_Benchmark_1
-
 # Phase 1 Benchmark
 
 This folder contains the "phase1_benchmark" dataset and accompanying materials used for the Phase 1 benchmark in this repository. The benchmark package contains the raw data, metadata/summary, and example scripts to load and evaluate models on the dataset.
