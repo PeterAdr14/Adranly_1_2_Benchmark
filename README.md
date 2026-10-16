@@ -2,7 +2,7 @@
 
 Short description
 -----------------
-This repository contains code and experiments for cross-network computer vision benchmarking (CV_XN_Benchmark_1). It provides training and evaluation scripts, experiment configurations, and analysis notebooks to reproduce and compare benchmark results across models/datasets used in the experiments.
+This repository contains code and experiments for cross-network computer vision benchmarking. It provides training and evaluation scripts, experiment configurations, and analysis notebooks to reproduce and compare benchmark results across models/datasets used in the experiments.
 
 Quick summary
 -------------
@@ -15,14 +15,13 @@ Table of contents
 - Repository layout
 - Reproducing results (full pipeline)
 - Brief results breakdown
-- Notes on hardware / randomness
-- Contact / citation
+- Notes on hardware/randomness
 
 Installation
 ------------
 1. Clone the repo:
-   git clone https://github.com/PeterAdr14/CV_XN_Benchmark_1.git
-   cd CV_XN_Benchmark_1
+   git clone https://github.com/PeterAdr14/Adranly_1_2_Benchmark.git
+   cd Adranly_1_2_Benchmark
 
 2. Create a Python virtual environment and install dependencies:
    python3 -m venv venv
@@ -50,9 +49,9 @@ Repository layout
 
 How it fits together
 --------------------
-- Data is downloaded / prepared by scripts in data/ (see data/README.md).
+- Data is downloaded/prepared by scripts in data/ (see data/README.md).
 - Training is performed by src/train.py using configs in configs/; checkpoints are written to experiments/<exp-name>/checkpoints.
-- Evaluation uses src/evaluate.py and writes metrics to experiments/<exp-name>/metrics/*. Results are aggregated into results/ for plotting / comparison.
+- Evaluation uses src/evaluate.py and writes metrics to experiments/<exp-name>/metrics/*. Results are aggregated into results/ for plotting/comparison.
 - Notebooks in notebooks/ read results/*.csv to produce the figures included in the brief results section.
 
 Reproducing the results (short path)
@@ -91,7 +90,7 @@ To get the same numbers reported in the brief results breakdown below:
 - Use the same config file (recorded in experiments/<exp>/config.yaml).
 - Use the same random seed (include --seed in training and evaluation).
 - Use the same preprocessing (use data/manifest or data/README).
-- Run for the same number of epochs / checkpoint policy.
+- Run for the same number of epochs/checkpoint policy.
 
 Brief results breakdown
 -----------------------
