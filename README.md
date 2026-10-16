@@ -1,4 +1,4 @@
-# Benchmark_1
+# 1.2 Benchmark
 
 Short description
 -----------------
