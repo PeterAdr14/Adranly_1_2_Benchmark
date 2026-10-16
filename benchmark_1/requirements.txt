@@ -1,0 +1,20 @@
+# Main environment (Python 3.10). Versions that BioMiner pins for its MolGlyph model code are kept (see its
+# main_environment.yml). torch is installed separately from the PyTorch wheel index by slurm/setup_envs.sbatch
+# (torch==2.6.0, torchvision==0.21.0).
+numpy==1.26.4
+pandas>=2.0,<2.3
+pyyaml>=6.0
+pillow>=10.0
+matplotlib>=3.7
+rdkit>=2023.9.1
+gdown>=5.0
+datasets>=2.18
+huggingface_hub>=0.23
+timm==1.0.13
+albumentations==2.0.5
+opencv-python-headless>=4.9
+SmilesPE
+# BioMiner's MolGlyph code imports `onmt`; BioMiner pins this version (it also pulls torchtext==0.5.0 and
+# pyonmttok, which install on Python 3.10).
+OpenNMT-py==2.2.0
+uv

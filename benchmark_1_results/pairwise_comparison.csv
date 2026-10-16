@@ -1,0 +1,6 @@
+dataset,tool_a,tool_b,n_paired,exact_match_a,exact_match_b,difference_a_minus_b,ci_low,ci_high,significant
+clef,biominer_molglyph,molnextr,454,0.77974,0.76432,0.01542,-0.03304,0.06167,False
+uob,biominer_molglyph,molnextr,500,0.888,0.836,0.052,0.028,0.076,True
+uspto,biominer_molglyph,molnextr,489,0.73006,0.78937,-0.0593,-0.11043,-0.01636,True
+jpo,biominer_molglyph,molnextr,449,0.79955,0.53007,0.26949,0.22049,0.31849,True
+biovista_ocsr,biominer_molglyph,molnextr,1000,0.76,0.403,0.357,0.32298,0.392,True

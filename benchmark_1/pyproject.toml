@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ocsr-bench"
+version = "0.2.0"
+description = "Reproducible benchmarking of OCSR tools (BioMiner MolGlyph, MolNexTR) on public molecular-image datasets, built for Slurm clusters"
+requires-python = ">=3.9"
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools.packages.find]
+where = ["src"]

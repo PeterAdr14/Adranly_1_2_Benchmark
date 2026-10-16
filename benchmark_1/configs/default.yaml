@@ -1,0 +1,83 @@
+# Benchmark configuration. Paths use environment variables so the same file works on a laptop and on the cluster:
+#   ${NAME}            value of $NAME (an error if unset)
+#   ${NAME:-fallback}  value of $NAME, or "fallback"
+# `source slurm/env.sh` (done by every job script) sets OCSR_WORK_DIR, OCSR_RESULTS_DIR and OCSR_MOLNEXTR_PYTHON.
+# Any value can be overridden without editing this file, e.g.
+#   python -m ocsr_bench run --set run.name=smoke_test --set run.max_samples=20
+
+run:
+  name: phase1_benchmark                         # results go to <output_dir>/<name>/
+  output_dir: ${OCSR_RESULTS_DIR:-results}       # small files; on the cluster this lives in $HOME (scratch is purged)
+  data_dir: ${OCSR_WORK_DIR:-ocsr_work}/data     # datasets, cached images, cloned tool code (re-creatable)
+  seed: 42                                       # controls subsampling and bootstrap resampling
+  max_samples: null                              # extra global cap per dataset (null = none)
+  batch_size: 16
+  device: auto                                   # auto | cuda | cpu
+  resume: true                                   # continue an interrupted run with the same name and config
+
+metrics:
+  fingerprint_radius: 2
+  fingerprint_bits: 2048
+  bootstrap_samples: 1000                        # 95% CIs (accuracy and paired tool differences)
+  confidence_bins: 10                            # calibration table (only for tools that report confidence)
+  openbabel_cross_check: false                   # true needs `pip install openbabel-wheel`
+
+# The four OCSR benchmarks named in the setup proposal are packaged in MolNexTR's public Hugging Face dataset repo
+# (real.zip also holds Staker and ACS, which are not used here). Several datasets share the one archive.
+x-real-archive: &real_archive
+  hf_repo: CYF200127/MolNexTR
+  hf_filename: real.zip
+  repo_type: dataset
+  extract_name: molnextr_real
+
+datasets:
+  - {name: clef,  kind: hf_archive, params: {<<: *real_archive, labels_match: clef,  max_samples: 500}}
+  - {name: uob,   kind: hf_archive, params: {<<: *real_archive, labels_match: uob,   max_samples: 500}}
+  - {name: uspto, kind: hf_archive, params: {<<: *real_archive, labels_match: uspto, max_samples: 500}}
+  - {name: jpo,   kind: hf_archive, params: {<<: *real_archive, labels_match: jpo,   max_samples: 500}}
+  # BioMiner's own benchmark: BioVista OCSR component (8,861 depictions + SMILES).
+  # Google Drive file id from https://github.com/jiaxianyan/BioMiner ("Statistics and Access of BioVista").
+  - name: biovista_ocsr
+    kind: gdrive_zip
+    params:
+      gdrive_file_id: 11iCH0j7U9iFgwXahjkWZouNyqATfEPoL
+      labels_file: null            # auto-discovered; set if the archive holds several label files
+      image_column: null           # auto-detected; BioVista's pdf_name + index convention is understood
+      smiles_column: null
+      max_samples: 1000
+  # Optional extra benchmark (not in the proposal).
+  - name: uspto30k
+    kind: huggingface
+    enabled: false
+    params: {hf_repo: docling-project/USPTO-30K, hf_config: null, split: null, max_samples: 1000}
+
+tools:
+  # BioMiner's open-weight OCSR model, run in the main environment (Python 3.10).
+  - name: biominer_molglyph
+    kind: molglyph
+    params:
+      checkpoint_repo: jiaxianustc/MolGlyph          # gated: accept its terms on Hugging Face, provide HF_TOKEN
+      checkpoint_filename: molglyph_large.pt
+      checkpoint_path: null                          # or a local .pt file
+      biominer_repo_url: https://github.com/jiaxianyan/BioMiner.git
+      biominer_ref: null                             # commit SHA/tag to pin (the commit used is saved with the run)
+      biominer_repo_path: null
+      postprocess: true                              # BioMiner's own Translator.refactor / get_refactor step
+      allow_unsafe_torch_load: false                 # only if torch.load refuses the checkpoint (weights_only error)
+  # The proposal's primary recognizer. It pins Python 3.8-era packages, so it runs in its own environment.
+  - name: molnextr
+    kind: molnextr
+    params:
+      checkpoint_repo: CYF200127/MolNexTR
+      checkpoint_repo_type: dataset
+      checkpoint_filename: molnextr_best.pth
+      checkpoint_path: null
+      repo_url: https://github.com/CYF2000127/MolNexTR.git
+      repo_ref: null
+      repo_path: null
+      python_executable: ${OCSR_MOLNEXTR_PYTHON:-}   # created by slurm/setup_envs.sbatch; empty = build a uv environment
+      python_version: "3.8"                          # only used when no python_executable is given
+      torch_spec: torch
+      extra_requirements: []
+  # The proposal's classical baseline. Disabled: its command-line behaviour was not verified.
+  - {name: osra, kind: osra, enabled: false, params: {timeout_s: 120}}
